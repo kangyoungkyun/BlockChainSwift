@@ -68,7 +68,7 @@ class Blockchain : Codable {
     }
     
     //블록체인 구조체에 블록을 추가하는 함수
-    private func addBlock(_ block : Block){
+     func addBlock(_ block : Block){
         //체인에 아무런 블록이 없으면 제네시스 블록 생성
         if self.blocks.isEmpty{
             //제네시스 블록의 이전 해쉬값 (임의지정)
@@ -93,6 +93,27 @@ class Blockchain : Codable {
         }
         
         return hash
+    }
+    
+    //새로운 블락 구하는 함수, 다음 블록 생성
+    func getNextBlock(transactions:[Transaction]) ->Block{
+        //새 블록 객체
+        let block = Block()
+        //새로운 블록이 생성될때는 이전 거래 내역이 배열로 들어간다.
+        transactions.forEach { (transaction) in
+            block.addTransaction(transaction: transaction)
+        }
+        //새로운 블록에는 이전 블록의 hash 값, 번호, 자신의 hash 값이 들어간다.
+        let previousBlock = getPreviousBlock()
+        block.index = self.blocks.count
+        block.previousHash = previousBlock.hash
+        block.hash = generateHash(for: block)
+        return block
+    }
+    
+    //이전 블럭 가져오기
+    private func getPreviousBlock() -> Block {
+        return self.blocks[self.blocks.count - 1]
     }
 }
 
