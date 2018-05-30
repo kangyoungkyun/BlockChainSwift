@@ -83,7 +83,15 @@ class Blockchain : Codable {
     //해쉬 생성 함수
     func generateHash(for block : Block) -> String{
         //block의 key 값을 이용해서 hash 값을 만들어 낸다.
-        let hash = block.key.sha1Hash()
+        var hash = block.key.sha1Hash()
+        // 특정값 (앞 2자리가 00 인 hash 값 구하기
+        while(!hash.hasPrefix("00")){
+            //조건이 맞지 않을 경우 block의 noce 값 증가
+            block.nonce += 1
+            hash = block.key.sha1Hash()
+            print(hash)
+        }
+        
         return hash
     }
 }
