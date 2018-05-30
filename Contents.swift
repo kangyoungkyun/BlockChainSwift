@@ -122,11 +122,21 @@ let genesisBlock = Block()
 //추가
 let blockchain = Blockchain(genesisBlock: genesisBlock)
 
-
+//새로운 거래 발생
 let transaction = Transaction(from: "kim", to: "hong", amount: 1000)
-let block1 = Block()
-block1.addTransaction(transaction: transaction)
-block1.key
+
+print("--------------------------------------------------------")
+//위에서 발생한 거래내역을 새로운 블럭을 생성하는 함수안에 넣어주었다.
+let block = blockchain.getNextBlock(transactions: [transaction])
+//새로만든 블록을 넣어주고
+blockchain.addBlock(block)
+//블록의 총 개수를 확인해보자.
+print(blockchain.blocks.count)
+
+
+//let block1 = Block()
+//block1.addTransaction(transaction: transaction)
+//block1.key
 
 
 
